@@ -33,6 +33,7 @@ This repository also has a Dockerized environment available for getting running 
 2. Compile the included example:
    ```
    g++ -o example example.cpp $(pkg-config --cflags --libs zle)
+   g++ -O3 -o benchmark benchmark.cpp $(pkg-config --cflags --libs zle)
    ```
 
 3. Run the example:
