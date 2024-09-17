@@ -44,8 +44,17 @@ RUN /bin/bash -c 'set -ex && \
 RUN cd /home/$DOCKER_USER/mplapack-${MPLAPACK_VER} && make -j`getconf _NPROCESSORS_ONLN`
 RUN cd /home/$DOCKER_USER/mplapack-${MPLAPACK_VER} && make install
 
+RUN sudo cp -r /home/$DOCKER_USER/MPLAPACK/lib/* /usr/local/lib/
+RUN sudo cp -r /home/$DOCKER_USER/MPLAPACK/include/* /usr/local/include/
+RUN sudo cp -r /home/$DOCKER_USER/MPLAPACK/bin/* /usr/local/bin/
+
+RUN sudo ldconfig
+
 # Copy the entire zle_src folder
 COPY --chown=${DOCKER_USER}:${DOCKER_USER} zle_src /home/${DOCKER_USER}/zle_src
+
+# Copy example file for zle
+COPY --chown=${DOCKER_USER}:${DOCKER_USER} example.cpp /home/${DOCKER_USER}/example.cpp
 
 # # Build zle
 # RUN cd /home/${DOCKER_USER}/zle_src
@@ -65,17 +74,18 @@ COPY --chown=${DOCKER_USER}:${DOCKER_USER} zle_src /home/${DOCKER_USER}/zle_src
 
 ############## from claude
 # Build and install zle
-# RUN cd /home/${DOCKER_USER}/zle && \
-#     mkdir build && \
-#     cd build && \
-#     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
-#     make && \
-#     sudo make install && \
-#     sudo ldconfig
+RUN cd /home/${DOCKER_USER}/zle_src && \
+    mkdir build && \
+    cd build && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    make && \
+    sudo make install && \
+    sudo ldconfig
 
-# # Set environment variables
-# ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}"
-# ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+# Set environment variables
+ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+ENV CPLUS_INCLUDE_PATH="/usr/local/include:${CPLUS_INCLUDE_PATH}"
 
-# # Set the default command to bash
-# CMD ["/bin/bash"]
+# Set the default command to bash
+CMD ["/bin/bash"]

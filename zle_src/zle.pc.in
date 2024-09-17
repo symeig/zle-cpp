@@ -6,5 +6,6 @@ includedir=${prefix}/include
 Name: zle
 Description: Symbolic eigenvalue calculation library
 Version: 1.0.0
+Requires: mplapack
 Libs: -L${libdir} -lzle
 Cflags: -I${includedir}

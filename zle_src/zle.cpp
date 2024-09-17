@@ -29,11 +29,6 @@ struct Dynamics {
     std::vector<mpreal> indicator_values;
 };
 
-struct SymX {
-    int coef;
-    std::string symbol;
-};
-
 mpcomplex* psuedo_symbolic_matrix_segment(const std::vector<SymX>& A, int n, int batch_index, int batch_size, const std::vector<std::string>& symbols, const Dynamics& dynamics) {
     std::vector<mpreal> real_values = dynamics.real_values;
     std::vector<mpreal> indicator_values = dynamics.indicator_values;
@@ -293,7 +288,7 @@ std::vector<std::vector<int>> hstack_coeffs_from_batches(const std::vector<int>&
 
 // symbolic eigenvalue solver for integer linear eigenvalue problems
 // input matrix must be square and of a form that has an integer linear eigenvalue solution
-std::vector<std::vector<int>> szleig(const std::vector<std::vector<SymX>>& A, const std::vector<std::string>& symbols, int batch_size = -1, int stagger = 0, int base = 10) {
+std::vector<std::vector<int>> zle_eigs(const std::vector<std::vector<SymX>>& A, const std::vector<std::string>& symbols, int batch_size /*= -1*/, int stagger /*= 0*/, int base /*= 10*/) {
     int n = A.size();
 
     if (batch_size == -1) {
@@ -362,7 +357,7 @@ std::vector<std::string> get_symbols(int n) {
 }
 
 // create a SymX object representing a symbol with a coefficient
-SymX symx(int i, std::string s = "") {
+SymX symx(int i, std::string s /*= ""*/) {
     SymX res = SymX();
     res.coef = i;
     res.symbol = s;

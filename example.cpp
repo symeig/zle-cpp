@@ -1,7 +1,9 @@
 #include <vector>
 #include <iterator>
 #include <chrono>
+#include <iostream>
 
+#include <zle.h>
 
 int main() {
     // Example usage
@@ -24,7 +26,7 @@ int main() {
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    std::vector<std::vector<int>> result = eigil(A, s, batch_size, stagger, base);
+    std::vector<std::vector<int>> result = zle_eigs(A, s, batch_size, stagger, base);
 
     auto end = std::chrono::high_resolution_clock::now();
 

@@ -53,7 +53,7 @@ Here's a simple example of how to use the ZLE library:
            {SymX{1, "x2"}, SymX{1, "x1"}, SymX{1, "x0"}}
        };
 
-       auto result = szleig(A, symbols);
+       auto result = zle_eigs(A, symbols);
 
        std::cout << "Eigenvalues:" << std::endl;
        for (const auto& ev : result) {
