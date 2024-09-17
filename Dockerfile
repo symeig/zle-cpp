@@ -56,14 +56,18 @@ COPY --chown=${DOCKER_USER}:${DOCKER_USER} zle_src /home/${DOCKER_USER}/zle_src
 # Copy example file for zle
 COPY --chown=${DOCKER_USER}:${DOCKER_USER} example.cpp /home/${DOCKER_USER}/example.cpp
 
+# Copy benchmarking folder for zle
+COPY --chown=${DOCKER_USER}:${DOCKER_USER} benchmarking /home/${DOCKER_USER}/benchmarking
+
 # Build and install zle
 RUN cd /home/${DOCKER_USER}/zle_src && \
     mkdir build && \
     cd build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
     make && \
-    sudo make install && \
-    sudo ldconfig
+    sudo make install
+    
+RUN sudo ldconfig
 
 # Set environment variables
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}"
