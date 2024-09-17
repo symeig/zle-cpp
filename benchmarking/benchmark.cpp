@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include <zle.h>
 
 std::vector<std::vector<int>> readMatrixFromCSV(const std::string& filename) {
@@ -46,9 +47,12 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    int batch_size = n;
+    int batch_size = std::min((int)std::ceil(n / 8.0), 32);
     int stagger = 0;
     int base = 10;
+
+    std::cout << "Starting benchmark..." << std::endl;
+    std::cout << "Batch size: " << batch_size << std::endl;
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -60,17 +64,17 @@ int main(int argc, char* argv[]) {
     std::cout << "Finished in " << duration.count() << " milliseconds" << std::endl;
 
     // Print results
-    std::cout << "Consolidated final result:" << std::endl;
-    std::cout << "[";
-    for (int i = 0; i < n; ++i) {
-        std::cout << "[";
-        for (int j = 0; j < n; ++j) {
-            int coeff = result[i][j];
-            std::cout << coeff << ",";
-        }
-        std::cout << "]," << std::endl;
-    }
-    std::cout << "]" << std::endl;
+    // std::cout << "Consolidated final result:" << std::endl;
+    // std::cout << "[";
+    // for (int i = 0; i < n; ++i) {
+    //     std::cout << "[";
+    //     for (int j = 0; j < n; ++j) {
+    //         int coeff = result[i][j];
+    //         std::cout << coeff << ",";
+    //     }
+    //     std::cout << "]," << std::endl;
+    // }
+    // std::cout << "]" << std::endl;
 
     return 0;
 }
