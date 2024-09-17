@@ -56,23 +56,6 @@ COPY --chown=${DOCKER_USER}:${DOCKER_USER} zle_src /home/${DOCKER_USER}/zle_src
 # Copy example file for zle
 COPY --chown=${DOCKER_USER}:${DOCKER_USER} example.cpp /home/${DOCKER_USER}/example.cpp
 
-# # Build zle
-# RUN cd /home/${DOCKER_USER}/zle_src
-# RUN mkdir build
-# RUN cd build
-# RUN cmake /home/${DOCKER_USER}/zle_src
-# RUN make
-# RUN make install
-
-# # Add zle to PATH
-# ENV PATH="/home/${DOCKER_USER}/zle_src/build:${PATH}"
-
-# # Set the default command to bash
-# CMD ["/bin/bash"]
-
-
-
-############## from claude
 # Build and install zle
 RUN cd /home/${DOCKER_USER}/zle_src && \
     mkdir build && \

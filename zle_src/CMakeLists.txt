@@ -4,13 +4,7 @@ project(zle_project)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(MPLAPACK_DIR "/home/docker/MPLAPACK")
-set(MPLAPACK_INCLUDE_DIR "${MPLAPACK_DIR}/include")
-set(MPLAPACK_LIB_DIR "${MPLAPACK_DIR}/lib")
-
 find_package(Threads REQUIRED)
-include_directories(${MPLAPACK_INCLUDE_DIR})
-link_directories(${MPLAPACK_LIB_DIR})
 
 # Build zle as a shared library
 add_library(zle SHARED zle.cpp)

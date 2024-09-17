@@ -36,7 +36,7 @@ int main() {
     // Print results
     std::cout << "consolidated final result:" << std::endl;
     std::cout << "[";
-    for (int i = n-1; i < n; ++i) { // TODO: change this back to 0
+    for (int i = 0; i < n; ++i) {
         std::cout << "[";
         for (int j = 0; j < n; ++j) {
             int coeff = result[i][j];

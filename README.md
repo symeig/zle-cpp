@@ -3,71 +3,34 @@
 
 ## Setup
 
-ZLE can be installed directly on your machine, with MPLAPACK.
+ZLE can be installed directly on your machine using the included cmake file, assuming
+you also have mplapack as an installed library.
 
-This repository also has a Dockerized environment available
-for getting running quickly.
+This repository also has a Dockerized environment available for getting running quickly. 
 
 1. Ensure you have Docker installed on your system.
 
 2. Clone this repository:
    ```
-   git clone https://github.com/your-repo/zle-docker.git
-   cd zle-docker
+   git clone git@github.com:symeig/zle-cpp.git
+   cd zle-cpp
    ```
 
 3. Build the Docker image:
    ```
-   docker build -t zle-env:latest .
+   docker build -t mplapack-zle:latest .
    ```
-   This process may take several minutes as it installs all necessary dependencies and builds MPLAPACK and ZLE.
+   This process may take a long time, as it installs all necessary dependencies and builds MPLAPACK and ZLE.
 
-## Usage
+## Usage With Example File
 
 1. Run a container from the image:
    ```
-   docker run -it --rm zle-env:latest
+   docker run -it --rm mplapack-zle:latest
    ```
    This command starts an interactive bash session in the container.
 
-2. Inside the container, you can now use the ZLE library in your C++ programs.
-
-### Example
-
-Here's a simple example of how to use the ZLE library:
-
-1. Create a file named `example.cpp` with the following content:
-
-   ```cpp
-   #include <zle>
-   #include <iostream>
-   #include <vector>
-   #include <string>
-
-   int main() {
-       int n = 3;
-       std::vector<std::string> symbols = {"x0", "x1", "x2"};
-       std::vector<std::vector<SymX>> A = {
-           {SymX{1, "x0"}, SymX{1, "x1"}, SymX{1, "x2"}},
-           {SymX{1, "x1"}, SymX{1, "x0"}, SymX{1, "x2"}},
-           {SymX{1, "x2"}, SymX{1, "x1"}, SymX{1, "x0"}}
-       };
-
-       auto result = zle_eigs(A, symbols);
-
-       std::cout << "Eigenvalues:" << std::endl;
-       for (const auto& ev : result) {
-           for (int coeff : ev) {
-               std::cout << coeff << " ";
-           }
-           std::cout << std::endl;
-       }
-
-       return 0;
-   }
-   ```
-
-2. Compile the example:
+2. Compile the included example:
    ```
    g++ -o example example.cpp $(pkg-config --cflags --libs zle)
    ```
