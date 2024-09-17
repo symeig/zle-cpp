@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    int batch_size = std::min((int)std::ceil(n / 8.0), 32);
+    int batch_size = std::max((int)std::ceil(n / 8.0), 32);
     int stagger = 0;
     int base = 10;
 
