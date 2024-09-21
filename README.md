@@ -1,4 +1,4 @@
-# ZLE (Symbolic Eigenvalue Calculation for Integer Linear Eigenvalues)
+# ZLE (Symbolic Integer-Linear Eigenvalue Calculation)
 
 
 ## Setup
