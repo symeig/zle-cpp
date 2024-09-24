@@ -33,7 +33,9 @@ int main() {
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "finished in " << duration.count() << " milliseconds" << std::endl;
 
-    // Print results
+    // Print results. Each element in the axis dimension is an eigenvalue. 
+    // Each element in the second axis is the coefficient on the corresponding 
+    // symbol of the same index from s 
     std::cout << "consolidated final result:" << std::endl;
     std::cout << "[";
     for (int i = 0; i < n; ++i) {
