@@ -21,20 +21,18 @@ This repository also has a Dockerized environment available for getting running 
    ```
    This process may take a long time, as it downloads, builds, and installs all dependencies, including MPLAPACK.
 
-## Usage With Example File
-
-1. Run a container from the image:
+4. Run a container from the image:
    ```
    docker run -it --rm mplapack-zle:latest
    ```
    This command starts an interactive bash session in the container.
 
-2. Compile the included example:
+5. Compile the included example:
    ```
    g++ -o example example.cpp $(pkg-config --cflags --libs zle)
    ```
 
-3. Run the example:
+6. Run the example:
    ```
    ./example
    ```
