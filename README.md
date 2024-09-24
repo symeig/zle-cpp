@@ -3,10 +3,9 @@
 
 ## Setup
 
-ZLE can be installed directly on your machine using the included cmake file, assuming
-you also have mplapack as an installed library.
+ZLE can be installed directly on your machine using the included cmake file, and requires [MPLAPACK]([url](https://github.com/nakatamaho/mplapack)) as an installed library on the system.
 
-This repository also has a Dockerized environment available for getting running quickly. 
+This repository also has a Dockerized environment available for getting running quickly which will have both MPLAPACK and ZLE installed.
 
 1. Ensure you have Docker installed on your system.
 
@@ -33,7 +32,6 @@ This repository also has a Dockerized environment available for getting running 
 2. Compile the included example:
    ```
    g++ -o example example.cpp $(pkg-config --cflags --libs zle)
-   g++ -O3 -o benchmark benchmark.cpp $(pkg-config --cflags --libs zle)
    ```
 
 3. Run the example:
