@@ -19,7 +19,7 @@ This repository also has a Dockerized environment available for getting running 
    ```
    docker build -t mplapack-zle:latest .
    ```
-   This process may take a long time, as it downloads and installs all dependencies, including building both MPLAPACK and ZLE.
+   This process may take a long time, as it downloads, builds, and installs all dependencies, including MPLAPACK.
 
 ## Usage With Example File
 
