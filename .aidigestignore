@@ -1,1 +1,3 @@
-benchmarking/testmats
+.DS_Store
+.vscode
+benchmarking/matrix_*

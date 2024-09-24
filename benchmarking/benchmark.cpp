@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <numeric>
 #include <cmath>
 #include <zle.h>
 
@@ -28,6 +29,16 @@ std::vector<std::vector<int>> readMatrixFromCSV(const std::string& filename) {
     return matrix;
 }
 
+long long runBenchmark(const std::vector<std::vector<SymX>>& A, const std::vector<std::string>& s, int batch_size, int stagger, int base) {
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::vector<std::vector<int>> result = zle_eigs(A, s, batch_size, stagger, base);
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <csv_file>" << std::endl;
@@ -47,34 +58,48 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    int batch_size = std::max((int)std::ceil(n / 8.0), 32);
+    int batch_size = n;
     int stagger = 0;
     int base = 10;
 
-    std::cout << "Starting benchmark..." << std::endl;
-    std::cout << "Batch size: " << batch_size << std::endl;
+    const int num_runs = 3;
+    std::vector<long long> durations;
 
-    auto start = std::chrono::high_resolution_clock::now();
+    std::cout << "Running " << num_runs << " iterations..." << std::endl;
 
-    std::vector<std::vector<int>> result = zle_eigs(A, s, batch_size, stagger, base);
+    for (int i = 0; i < num_runs; ++i) {
+        long long duration = runBenchmark(A, s, batch_size, stagger, base);
+        durations.push_back(duration);
+        std::cout << "Run " << i + 1 << " finished in " << duration << " milliseconds" << std::endl;
+    }
 
-    auto end = std::chrono::high_resolution_clock::now();
+    // Calculate average
+    long long total_duration = std::accumulate(durations.begin(), durations.end(), 0LL);
+    double average_duration = static_cast<double>(total_duration) / num_runs;
 
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Finished in " << duration.count() << " milliseconds" << std::endl;
+    // Calculate variance
+    double variance = 0.0;
+    for (const auto& duration : durations) {
+        variance += std::pow(duration - average_duration, 2);
+    }
+    variance /= num_runs;
 
-    // Print results
-    // std::cout << "Consolidated final result:" << std::endl;
-    // std::cout << "[";
-    // for (int i = 0; i < n; ++i) {
-    //     std::cout << "[";
-    //     for (int j = 0; j < n; ++j) {
-    //         int coeff = result[i][j];
-    //         std::cout << coeff << ",";
-    //     }
-    //     std::cout << "]," << std::endl;
-    // }
-    // std::cout << "]" << std::endl;
+    // Calculate standard deviation
+    double std_deviation = std::sqrt(variance);
+
+    std::cout << "Matrix size: " << n << "x" << n << std::endl;
+    std::cout << "Average time over " << num_runs << " runs: " << average_duration << " milliseconds" << std::endl;
+    std::cout << "Variance: " << variance << " milliseconds^2" << std::endl;
+    std::cout << "Standard Deviation: " << std_deviation << " milliseconds" << std::endl;
+
+    // Log results to a CSV file
+    std::ofstream logFile("benchmark_results.csv", std::ios_base::app); // Open in append mode
+    if (logFile.is_open()) {
+        logFile << n << "," << average_duration << "," << variance << "," << std_deviation << std::endl;
+        logFile.close();
+    } else {
+        std::cerr << "Unable to open log file for writing." << std::endl;
+    }
 
     return 0;
 }
