@@ -111,7 +111,8 @@ ExtractionParams set_extraction_params(const mpreal& base, int digits) {
         params.midpoint += midpoint_value * mpfr::pow(base, i);
     }
 
-    // suspicious chain casting
+    // Chain casting is safe for these midpoint values which will 
+    // almost never exceed 100 or so
     params.midpoint_value = (int)(long int)(midpoint_value);
     return params;
 }
@@ -127,7 +128,7 @@ bool compare_real(const mpcomplex &a, const mpcomplex &b) {
     return a.real() < b.real();
 }
 
-//eig
+//computing numeric eigenvalues with Cgeev, and sorting result
 mpcomplex* sorted_eig(mpcomplex* a, mpcomplex* w, int n, int batch_index) {
     mpcomplex *vl = new mpcomplex[n * n];
     mpcomplex *vr = new mpcomplex[n * n];
@@ -159,7 +160,7 @@ int filler_digits(const mpreal& e, int digits, const mpreal& base) {
         ++j;
     }
 
-    // suspicious chain casting
+    // Chain casting is safe for these digit amounts which will practically never exceed 1000 or so
     return std::min((int)(long int)(mpfr::ceil(digits / 2) - 1), j - 1);
 }
 
@@ -288,6 +289,8 @@ std::vector<std::vector<int>> hstack_coeffs_from_batches(const std::vector<int>&
 
 // symbolic eigenvalue solver for integer linear eigenvalue problems
 // input matrix must be square and of a form that has an integer linear eigenvalue solution
+// output is a vector of eigenvalue representations - where each integer linear sum 
+// eigenvalue is itself a vector of coefficients on the corresponding symbol by index from `symbols`.
 std::vector<std::vector<int>> zle_eigs(const std::vector<std::vector<SymX>>& A, const std::vector<std::string>& symbols, int batch_size /*= -1*/, int stagger /*= 0*/, int base /*= 10*/) {
     int n = A.size();
 
