@@ -5,7 +5,7 @@
 
 ZLE can be installed directly on your machine using the included cmake file, and requires [MPLAPACK](https://github.com/nakatamaho/mplapack) as an installed library on the system.
 
-This repository also has a Dockerized environment available for getting running quickly which will have both MPLAPACK and ZLE installed.
+This repository also has a Dockerized environment available for getting running quickly which will have both MPLAPACK and ZLE available inside.
 
 1. Ensure you have [Docker](https://www.docker.com/products/docker-desktop/) installed on your system.
 
